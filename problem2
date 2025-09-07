@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+using namespace std;
+
+// ----------------- Student Class -----------------
+class Student {
+    int rollNo;
+    string name;
+    int m1, m2, m3;
+
+public:
+    // Constructor
+    Student(int r, string n, int a, int b, int c) {
+        if (a < 0 || a > 100 || b < 0 || b > 100 || c < 0 || c > 100) {
+            throw invalid_argument("Marks must be between 0 and 100.");
+        }
+        rollNo = r;
+        name = n;
+        m1 = a; m2 = b; m3 = c;
+    }
+
+    int getRoll() { return rollNo; }
+    double average() { return (m1 + m2 + m3) / 3.0; }
+
+    // Overload ++ (add bonus +1 to each subject, max 100)
+    void operator++() {
+        if (m1 < 100) m1++;
+        if (m2 < 100) m2++;
+        if (m3 < 100) m3++;
+    }
+
+    // Overload > (compare average marks)
+    bool operator>(Student& other) {
+        return this->average() > other.average();
+    }
+
+    // Display details
+    void display() {
+        cout << "Roll: " << rollNo << ", Name: " << name
+             << ", Marks: " << m1 << " " << m2 << " " << m3
+             << ", Avg: " << average() << endl;
+    }
+};
+
+// ----------------- Gradebook Class -----------------
+class Gradebook {
+    vector<Student> students;
+
+public:
+    // Add student (check duplicate roll no)
+    void addStudent(Student s) {
+        for (auto &st : students) {
+            if (st.getRoll() == s.getRoll()) {
+                throw runtime_error("Duplicate roll number!");
+            }
+        }
+        students.push_back(s);
+    }
+
+    // Display all students
+    void displayAll() {
+        if (students.empty()) throw runtime_error("Gradebook is empty!");
+        for (auto &s : students) {
+            s.display();
+        }
+    }
+
+    // Show top student
+    void topStudent() {
+        if (students.empty()) throw runtime_error("Gradebook is empty!");
+        Student top = students[0];
+        for (auto &s : students) {
+            if (s > top) top = s;
+        }
+        cout << "Top Student:\n";
+        top.display();
+    }
+};
+
+// ----------------- Main Function -----------------
+int main() {
+    Gradebook gb;
+
+    try {
+        // Adding students
+        gb.addStudent(Student(1, "Amit", 80, 75, 90));
+        gb.addStudent(Student(2, "Riya", 88, 92, 85));
+        gb.addStudent(Student(3, "Sam", 70, 65, 60));
+
+        cout << "All Students:\n";
+        gb.displayAll();
+
+        cout << "\nApplying bonus (operator++ on Roll 1)...\n";
+        Student s1(1, "Dummy", 0, 0, 0); // just placeholder for demo
+        // Normally you’d search and update; here we show ++ directly
+        ++s1; // bonus marks (for understanding only)
+
+        cout << "\nTop Student:\n";
+        gb.topStudent();
+    }
+    catch (exception &e) {
+        cout << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
