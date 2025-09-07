@@ -1,0 +1,11 @@
+try
+     {
+        if(b==0)
+              throw(runtime_error("Can not devide by Zero"));
+         c=a/b;
+         cout<<c;
+     }
+      catch(const std::exception &e)
+     {
+        std::cerr << e.what() << '\n';
+     }
