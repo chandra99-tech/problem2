@@ -1,0 +1,140 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include<stdexcept>
+using namespace std;
+
+// Step 1: Make a way to say "Oops!" when something goes wrong
+class Oops {
+public:
+    string message;
+    Oops(string msg) : message(msg) {}
+};
+
+// Step 2: Item class (like a toy in the store)
+class Item {
+public:
+    string itemID;   // Like "M1" for Mouse
+    string itemName; // Like "Mouse"
+    double price;    // Like $10
+    int stock;       // Like 5 mice left
+
+    Item(string id, string name, double p, int s) {
+        if (p < 0 || s < 0) {
+            cout << "Oops! Price or stock can't be negative!\n";
+            throw Oops("Bad price or stock");
+        }
+        itemID = id;
+        itemName = name;
+        price = p;
+        stock = s;
+    }
+
+    // Take mice from stock when sold
+    void sell(int qty) {
+        if (qty > stock) {
+            cout << "Oops! Not enough " << itemName << "!\n";
+            throw Oops("Not enough stock");
+        }
+        stock = stock - qty;
+    }
+};
+
+// Step 3: Bill class (like a receipt)
+class Bill {
+public:
+    string billID;      // Like "B1"
+    string customerName; // Like "Emma"
+    int mouseQty;       // How many mice bought
+    double mousePrice;  // Price of one mouse
+
+    Bill(string customer) {
+        billID = "B1";
+        customerName = customer;
+        mouseQty = 0;
+        mousePrice = 0.0;
+    }
+
+    // Step 4: Add mice to bill using + (like putting mice in a bag)
+    Bill& operator+(Item item) {
+        if (mouseQty > 0) {
+            cout << "Oops! Can only add one type of item!\n";
+            throw Oops("Too many items");
+        }
+        mouseQty = 2; // Emma buys 2 mice
+        if (mouseQty <= 0) {
+            cout << "Oops! Must buy at least one mouse!\n";
+            throw Oops("Bad quantity");
+        }
+        mousePrice = item.price;
+        item.sell(mouseQty); // Take mice from stock
+        return *this;
+    }
+
+    // Step 5: Show bill using << (like printing a receipt)
+    friend ostream& operator<<(ostream& out, const Bill& bill) {
+        if (bill.mouseQty == 0) {
+            cout << "Oops! The bill is empty!\n";
+            throw Oops("Empty bill");
+        }
+        out << "Bill: " << bill.billID << "\n";
+        out << "Customer: " << bill.customerName << "\n";
+        out << "Mouse: " << bill.mouseQty << " x $" << bill.mousePrice << "\n";
+        out << "Total: $" << bill.mouseQty * bill.mousePrice << "\n";
+        return out;
+    }
+
+    // Step 6: Save bill to notebook (bills.txt)
+    void save() {
+        if (mouseQty == 0) {
+            cout << "Oops! Can't save an empty bill!\n";
+            throw Oops("Empty bill");
+        }
+        ofstream file("bills.txt", ios::app); // Add to notebook
+        file << "Bill: " << billID << "\n";
+        file << "Customer: " << customerName << "\n";
+        file << "Mouse: " << mouseQty << " x $" << mousePrice << "\n";
+        file << "Total: $" << mouseQty * mousePrice << "\n";
+        file << "----\n";
+        file.close();
+    }
+};
+
+// Step 7: Show old bills from notebook
+void showOldBills() {
+    ifstream file("bills.txt");
+    if (file.is_open()) {
+        cout << "Old Bills:\n----\n";
+        string line;
+        while (getline(file, line)) {
+            cout << line << "\n";
+        }
+        cout << "----\n";
+        file.close();
+    } else {
+        cout << "No old bills.\n";
+    }
+}
+
+// Step 8: Play the store game
+int main() {
+    // Show old bills
+    showOldBills();
+
+    // Set up one item (mouse)
+    Item mouse("M1", "Mouse", 10.0, 5);
+
+    // Make a bill for Emma
+    Bill bill("Emma");
+
+    // Add mice to bill and check for mistakes
+    try {
+        bill + mouse; // Emma buys 2 mice
+        cout << bill; // Show the bill
+        bill.save();  // Save the bill
+    } catch (Oops& e) {
+        // Do nothing if there's an error (already shown)
+    }
+
+    return 0; // Game over
+}
