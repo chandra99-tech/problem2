@@ -1,0 +1,97 @@
+// read write method (How to store object in file)
+#include<iostream>
+#include<fstream>
+#define clrscr() system("cls")
+using namespace std;
+class Employee
+{
+    private :
+    int empid;
+    char name[20];
+    char dname[20];
+    int salary;
+    public:
+    void getdata()
+    {
+        cout<<"\nEnter a id: ";
+        cin>>empid;
+        cout<<"\n Enter Name: ";
+        cin>>name;
+        cout<<"\n Enter Department Name: ";
+        cin>>dname;
+        cout<<"\n Enter Salary: ";
+       cin>>salary;
+    }
+    void showdata()
+    {
+        cout<<"\n Emp Id:"<<empid;
+        cout<<" Emp Name: "<<name;
+        cout<<" Department Name: "<<dname;
+        cout<<" Salary: "<<salary;
+        cout<<"\n";
+    }
+};
+class Emp_File
+{
+    private:
+    Employee buffer;
+    public:
+    void diskin();
+    void diskout();
+};
+void Emp_File::diskin()
+{
+    fstream fout("g://cppdata/empinfo.txt",ios::app);
+    if(fout.is_open())
+    {
+        char ch;
+     do
+     {
+        buffer.getdata();  // data read
+        fout.write((char*)&buffer, sizeof(buffer));  // Write object
+        cout<<"\n Want to continue";
+        cin>>ch;
+     }while(ch=='y' || ch=='Y');
+        fout.close(); //close file
+    }
+    else
+    cout<<"File error";
+}
+void Emp_File::diskout()
+{
+    fstream fin("g://cppdata/empinfo.txt",ios::in);  // open file in read mode
+    if(fin.is_open())
+     {
+        fin.read((char*) & buffer,sizeof(buffer)); 
+        while(fin)       
+        { 
+          buffer.showdata();  //display data 
+          fin.read((char*) & buffer,sizeof(buffer));  // read object
+       }
+        fin.close(); // close
+    }
+    else
+    cout<<"File error";
+}
+int main()
+{
+    int choice;
+    Emp_File ef;
+    clrscr();
+    do
+    {
+    cout<<"\n-----------------File Menu---------------";
+    cout<<"\n 1. Write Data \n 2 Read Data\n 3.Exit";
+    cout<<"\n-----------------------------------------";
+    cout<<"\nEnter your choice";
+    cin>>choice;
+    switch(choice)
+    {
+          case 1:ef.diskin();break;
+          case 2: ef.diskout();break;
+          case 3: break;
+          default:cout<<"\n Invalid chioce";
+    }
+    }while(choice!=3);
+    return 0;
+}
