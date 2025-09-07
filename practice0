@@ -1,0 +1,32 @@
+// open file using Open Method for write
+#include<iostream>
+#include<fstream>
+#define clrscr() system("cls")
+using namespace std;
+int main()
+{
+    clrscr();
+    fstream fout;
+    char name[20];
+     char city[20];
+     char college[20];
+    fout.open("g://cppdata/student.txt",ios::out);
+    cout<<"Enter Name: ";
+    cin>>name;
+    fout<<name;
+    fout.close();
+
+    fout.open("g://cppdata/college.txt",ios::out);
+    cout<<"Enter College Name: ";
+    cin>>college;
+    fout<<college;
+    fout.close();
+    
+    cout<<"Enter City Name: ";
+    cin>>city;
+    fout<<city;
+    fout.close();
+    cout<<" Multiple file created";
+    return 0;
+
+}
