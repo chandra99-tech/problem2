@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array object</title>
+</head>
+<body>
+    
+    <button type="button" onclick="funct()">click me</button>
+    <script>
+        let obj=[
+            {eid:100,ename:"chandrakant",esurname:"palandurkar",esalary:5500,place:"gondia"},
+            {eid:100,ename:"chandrakant",esurname:"palandurkar",esalary:5500,place:"gondia"},
+            {eid:100,ename:"chandrakant",esurname:"palandurkar",esalary:5500,place:"gondia"},
+            {eid:100,ename:"chandrakant",esurname:"palandurkar",esalary:5500,place:"gondia"},
+        ]
+
+        function funct(){
+            for(i=0;i<obj.length;i++){
+                document.writeln(obj[i].eid,obj[i].ename,obj[i].esurname,obj[i].esalary)
+            }
+        }
+    </script>
+</body>
+</html>
