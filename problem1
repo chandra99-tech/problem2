@@ -130,11 +130,4 @@ int main() {
     // Add mice to bill and check for mistakes
     try {
         bill + mouse; // Emma buys 2 mice
-        cout << bill; // Show the bill
-        bill.save();  // Save the bill
-    } catch (Oops& e) {
-        // Do nothing if there's an error (already shown)
-    }
-
-    return 0; // Game over
-}
+        cout << bill; // Sho
