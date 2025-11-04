@@ -4,14 +4,14 @@
 #include<stdexcept>
 using namespace std;
 
-// Step 1: Make a way to say "Oops!" when something goes wrong
+ Make a way to say "Oops!" when something goes wrong
 class Oops {
 public:
     string message;
     Oops(string msg) : message(msg) {}
 };
 
-// Step 2: Item class (like a toy in the store)
+ Item class (like a toy in the store)
 class Item {
 public:
     string itemID;   // Like "M1" for Mouse
@@ -40,7 +40,7 @@ public:
     }
 };
 
-// Step 3: Bill class (like a receipt)
+ Bill class (like a receipt)
 class Bill {
 public:
     string billID;      // Like "B1"
@@ -55,7 +55,7 @@ public:
         mousePrice = 0.0;
     }
 
-    // Step 4: Add mice to bill using + (like putting mice in a bag)
+     Add mice to bill using + (like putting mice in a bag)
     Bill& operator+(Item item) {
         if (mouseQty > 0) {
             cout << "Oops! Can only add one type of item!\n";
@@ -71,7 +71,7 @@ public:
         return *this;
     }
 
-    // Step 5: Show bill using << (like printing a receipt)
+    //  Show bill using << (like printing a receipt)
     friend ostream& operator<<(ostream& out, const Bill& bill) {
         if (bill.mouseQty == 0) {
             cout << "Oops! The bill is empty!\n";
@@ -84,7 +84,7 @@ public:
         return out;
     }
 
-    // Step 6: Save bill to notebook (bills.txt)
+    //  Save bill to notebook (bills.txt)
     void save() {
         if (mouseQty == 0) {
             cout << "Oops! Can't save an empty bill!\n";
@@ -100,7 +100,7 @@ public:
     }
 };
 
-// Step 7: Show old bills from notebook
+//  Show old bills from notebook
 void showOldBills() {
     ifstream file("bills.txt");
     if (file.is_open()) {
@@ -116,7 +116,7 @@ void showOldBills() {
     }
 }
 
-// Step 8: Play the store game
+// Play the store game
 int main() {
     // Show old bills
     showOldBills();
