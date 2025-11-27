@@ -9,16 +9,6 @@ class Student {
     string name;
     int m1, m2, m3;
 
-public:
-    // Constructor
-    Student(int r, string n, int a, int b, int c) {
-        if (a < 0 || a > 100 || b < 0 || b > 100 || c < 0 || c > 100) {
-            throw invalid_argument("Marks must be between 0 and 100.");
-        }
-        rollNo = r;
-        name = n;
-        m1 = a; m2 = b; m3 = c;
-    }
 
     int getRoll() { return rollNo; }
     double average() { return (m1 + m2 + m3) / 3.0; }
