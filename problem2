@@ -1,7 +1,4 @@
-
-using namespace std;
-
-// ----------------- Student Class -----------------
+------------- Student Class -----------------
 class Student {
     int rollNo;
     string name;
